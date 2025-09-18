@@ -4,12 +4,13 @@ import styled from "styled-components";
 const Results = styled.div`
 	overflow-y: scroll;
 	margin-bottom: 20px;
-	background-color: #522546;
+	background-color: #2c2f33;
 	width: 40vw;
 	height: 100vh;
 	padding: 20px;
 	box-sizing: border-box;
-	box-shadow: -5px 0px 50px #1b1b1b;
+	box-shadow: -5px 0px 10px #1b1b1b7f;
+	//box-shadow: -5px 0px 50px #1b1b1b;
 `;
 
 const Result = styled.div`

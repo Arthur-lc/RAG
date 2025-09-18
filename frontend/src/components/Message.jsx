@@ -1,34 +1,35 @@
 import styled from "styled-components"
+import Markdown from "react-markdown";
 
 const Msg = styled.div`
 	display: flex;
 	align-items: center;
 	text-align: right;
-
-	background-color: #88304E;
-	min-height: 2em;
+	
 	padding: 10px 20px 10px 20px;
 	margin-top: 10px;
 	margin-bottom: 10px;
-
-	border-radius: 15px 15px 15px 0;
-
+	
+	
 	width: fit-content;
 	min-width: 10em;
-
-	box-shadow: -5px 5px 10px #1d1d1d;
+	
+	box-shadow: -5px 5px 10px #1b1b1b7f;
 `;
 
 const UserMsg = styled(Msg)`
-	align-self: flex-start;
-	margin-right: 50px;
+	max-width: 60%;
+	background-color:#7289da;
+	align-self: flex-end;
+	border-radius: 15px 15px 0 15px;
+	margin-left: 50px;
 `;
 
 const AiMsg = styled(Msg)`
-	border-radius: 15px 15px 0 15px;
-	align-self: flex-end;
-	margin-left: 50px;
-	background-color: #522546;
+	background-color: #33363b;
+	margin-right: 50px;
+	align-self: flex-start;
+	border-radius: 15px 15px 15px 0;
 `;
 
 const Content = styled.p`
@@ -48,7 +49,11 @@ function Message({ msg }) {
 
 	return (
 		<AiMsg>
-			<Content>{msg.content}</Content>
+			<Content>
+				<Markdown>
+					{msg.content}
+				</Markdown>
+			</Content>
 		</AiMsg>
 	)
 }

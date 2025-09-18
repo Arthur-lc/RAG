@@ -1,40 +1,54 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 import { useSendQuery, useSendRagQuery } from './hooks/sendQuey'
 import SearchResults from './components/SearchResults'
 import Message from './components/Message'
+import { CiSearch } from "react-icons/ci";
 
 const Chat = styled.div`
   width: 60vw;
   display: flex;
   flex-direction: column;
-  align-content: space-around;
   align-items: center;
   padding-top: 50px;
 `
 
-const Input = styled.input`
-  width: 100%;
-`
-
 const MsgContainer = styled.div`
   box-sizing: border-box;
-  width: 70%;
-  flex-grow: 1;
+  width: 100%;
   overflow-y: auto;
-  padding: 1rem;
+  padding-right: 5rem;
+  padding-left: 5rem;
   display: flex;
   flex-direction: column;
-`
-
-const Button = styled.button`
-  margin: 0 5px 0 5px;
-  height: 100%;
+  flex-grow: 1;
 `
 
 const Form = styled.form`
   display: flex;
   margin: 20px;
+  width: 100%;
+  justify-content: center;
+`
+
+const Input = styled.input`
+  max-width: 40em;
+  width: 100%;
+  margin: 0;
+  padding: 1em;
+  border: 0;
+  border-radius: 10px 0 0 10px;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+`
+
+const Button = styled.button`
+  height: 100%;
+  background-color: #7289da;
+  border-radius: 0 10px 10px 0;
 `
 
 const StyledBody = styled.div`
@@ -52,6 +66,7 @@ const Error = styled.div`
 
 function App() {
   const [input, setInput] = useState('');
+  const msgContainerRef = useRef(null);
   const { sendQuery, loading, error, data } = useSendRagQuery();
   const [msgs, setMsgs] = useState([]);
 
@@ -63,20 +78,27 @@ function App() {
 
   useEffect(() => {
     if (data && data.answer) {
-      setMsgs([...msgs, { content: data.answer , isFromUser: false} ]);
+      setMsgs([...msgs, { content: data.answer , isFromUser: false } ]);
     }
     console.log(data);
     
   }, [data]);
 
+  useEffect(() => {
+    if (msgContainerRef.current) {
+      msgContainerRef.current.scrollTop = msgContainerRef.current.scrollHeight;
+    }
+  }, [msgs]);
+
   return (
     <StyledBody>
       <Chat>
         {error && (<Error>Error sending the request.</Error>)}
-        <MsgContainer>
+        <MsgContainer ref={msgContainerRef}>
           {msgs.map((msg, index) => (
             <Message key={index} msg={msg} />
           ))}
+
         </MsgContainer>
         <Form onSubmit={handleSubmit}>
           <Input
@@ -84,7 +106,7 @@ function App() {
             onChange={e => setInput(e.target.value)}
             placeholder='faça sua busca'
           />
-          <Button>Search</Button>
+          <Button><CiSearch /></Button>
         </Form>
       </Chat>
       <SearchResults results={data?.results}/>
