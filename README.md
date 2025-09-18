@@ -2,6 +2,8 @@
 
 Este projeto implementa um pipeline de Retrieval-Augmented Generation (RAG) usando um banco de dados vetorial para responder a perguntas com base em um conjunto de documentos.
 
+![RAG](image.png)
+
 ## Tecnologias Utilizadas
 
 ### Backend
