@@ -1,6 +1,27 @@
 import { useState } from 'react';
 
-const QUERY_URL = import.meta.env.VITE_RAG_SERVER_URL
+const SERVER_URL = import.meta.env.VITE_RAG_SERVER_URL
+
+let sessionId = undefined;
+
+async function requestSessionId() {
+    const url = `${SERVER_URL}/newSession`
+
+    const response = await fetch(url, {
+        method: 'POST',
+    });
+
+    if (!response.ok) {
+        throw new Error("Error while creating new session");
+    }
+
+    const data = await response.json();
+    const sessionId = data.sessionId
+    console.log("1: ", sessionId);
+    
+
+    return sessionId;
+}
 
 function useSendQuery() {
     const [loading, setLoading] = useState(false);
@@ -14,7 +35,7 @@ function useSendQuery() {
 
         const encodedQuery = encodeURIComponent(query)
 
-        const url = `${QUERY_URL}/query?query=${encodedQuery}`
+        const url = `${SERVER_URL}/query?query=${encodedQuery}`
 
         try {
             const response = await fetch(url, {
@@ -22,7 +43,7 @@ function useSendQuery() {
             });
 
             if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
+                throw new Error(`Error: ${response}`);
             }
 
             const result = await response.json();
@@ -49,12 +70,19 @@ function useSendRagQuery() {
         setError(null);
         setData(null);
 
-        const url = `${QUERY_URL}/rag`
+        if (sessionId === undefined) {
+            sessionId = await requestSessionId();
+        }
+
+        const url = `${SERVER_URL}/rag`
 
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'session-Id': sessionId
+                },
                 body: JSON.stringify({ question: question }),
             });
 

@@ -72,13 +72,16 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMsgs([...msgs, { content: input, isFromUser: true }])
-    await sendQuery(input);
+    const question = input;
+    setInput('');
+
+    setMsgs((prevMsgs) => [...prevMsgs, { content: question, isFromUser: true }])
+    await sendQuery(question);
   };
 
   useEffect(() => {
     if (data && data.answer) {
-      setMsgs([...msgs, { content: data.answer , isFromUser: false } ]);
+      setMsgs((prevMsgs) => [...prevMsgs, { content: data.answer , isFromUser: false } ]);
     }
     console.log(data);
     
