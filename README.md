@@ -62,3 +62,21 @@ O servidor estará rodando em `http://localhost:3000`.
     npm run dev
     ```
 A aplicação estará disponível em `http://localhost:5173`.
+
+## Adicionando Documentos ao Banco de Dados
+
+Para adicionar novos documentos ao banco de dados vetorial, siga os passos abaixo:
+
+1. **Coloque os documentos no diretório correto**:
+   - Adicione os arquivos de texto ou Markdown que deseja processar no diretório `backend/docs/`.
+
+2. **Execute o script para processar os documentos**:
+   - Navegue até o diretório `backend`:
+   - Execute o script `buld_db.js` para processar os documentos e adicionar os embeddings ao banco de dados:
+     ```bash
+     node rag_module/buld_db.js
+     ```
+
+4. **Confirme os dados no banco**:
+   - Após a execução do script, os novos documentos estarão disponíveis no banco de dados vetorial localizado em `backend/vector_db/chunks.lance/`.
+
