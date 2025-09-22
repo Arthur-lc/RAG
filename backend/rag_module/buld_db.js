@@ -10,7 +10,7 @@ const md = new MarkdownIt();
 const vec_db = new VecDB();
 await vec_db.initialize();
 
-function chunkMarkdown(content, maxTokens = 500) {
+function chunkMarkdown(content, maxTokens = 400) {
     const chunks = [];
 
     const tokens = md.parse(content, {});
